@@ -1,5 +1,6 @@
 package com.jbl.book.springboot.domain.posts;
 
+import com.jbl.book.springboot.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Getter // 롬복 에노테이션, 클래스 내 모든 필드의 Getter 메소드를 자동생성
 @NoArgsConstructor // 롬복 에노테이션, 기본 생성자 자동 추가 public Posts(){}와 같은효과
 @Entity //JPA의 어노테이션, 테이블과 링크될 클래스, 기본값으로 클래스의 카멜케이스 이름을 언더스코어 네이밍(_)으로 테이블 이름을 매칭 SalesManager->sales_manager table
-public class Posts {
+public class Posts extends BaseTimeEntity {
 
     @Id // 해당 테이블의 PK 필드를 나타냄
     @GeneratedValue(strategy = GenerationType.IDENTITY) // PK의 생성 규칙을 나타냄, 부트2.0에서는 GenerationType.IDENTITY를 추가하면 auto_increment가 됨
@@ -28,6 +29,11 @@ public class Posts {
         this.title = title;
         this.content = content;
         this.author = author;
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
 
