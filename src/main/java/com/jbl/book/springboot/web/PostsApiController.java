@@ -28,6 +28,12 @@ public class PostsApiController {
     public PostsResponseDto findById (@PathVariable Long id) {
         return postsService.findById(id);
     }
+
+    @DeleteMapping("/api/v1/posts/{id}")
+    public Long delete(@PathVariable Long id) {
+        postsService.delete(id);
+        return id;
+    }
 }
 
 // 스프링에선 Bean을 주입 받는 방식들이 다음과 같다
