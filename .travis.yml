@@ -6,19 +6,37 @@ branches:
   only:
     - master
 
-before_install:
-  - chmod +x gradlew
-
 # Travis CI 서버의 Home
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
+before_install:
+  - chmod +x gradlew
+
 script: "./gradlew clean build"
+
+before_deploy:
+  - zip -r freelec-springboot2-webservice *
+  - mkdir -p deploy
+  - mv freelec-springboot2-webservice.zip deploy/freelec-springboot2-webservice.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo seetings에 설정된 값
+    bucket: freelec-jb-springboot-build # S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private # zip 파일 접근을 private 으로
+    local_dir: deploy # before_deploy에서 생성한 디렉토리
+    wait-until-deployed: true
+
 
 # CI 실행 완료 시 메일로 알람
 notifications:
   email:
     recipients:
       - jaebok0703@gmail.com
+
